@@ -12,7 +12,7 @@ import {
 
 import {getNews, getNewsLang} from './src/news';
 import {TextInput, Button} from 'react-native-paper';
-import ArticleFunc from './src/components/ArticleFunc';
+import Article from './src/components/article/Article';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import SwitchSelector from 'react-native-switch-selector';
 
@@ -177,7 +177,7 @@ const App = () => {
 
             <FlatList
               data={articles}
-              renderItem={({item}) => <ArticleFunc article={item} />}
+              renderItem={({item}) => <Article article={item} />}
               keyExtractor={(item: any) => item.url}
               refreshing={refreshing}
               onRefresh={handleRefresh.bind(this)}
@@ -256,7 +256,7 @@ const App = () => {
             {/* <ScrollView> */}
             <FlatList
               data={articles}
-              renderItem={({item}) => <ArticleFunc article={item} />}
+              renderItem={({item}) => <Article article={item} />}
               keyExtractor={(item: any) => item.url}
               refreshing={refreshing}
               onRefresh={handleRefresh.bind(this)}
