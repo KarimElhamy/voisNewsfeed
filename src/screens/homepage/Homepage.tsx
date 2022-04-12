@@ -10,9 +10,9 @@ import {
   VirtualizedList,
 } from 'react-native';
 
-import {getNews, getNewsLang} from './src/news';
+import {getNews, getNewsLang} from '../../news';
 import {TextInput, Button} from 'react-native-paper';
-import Article from './src/components/article/Article';
+import Article from '../../components/article/Article';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import SwitchSelector from 'react-native-switch-selector';
 
