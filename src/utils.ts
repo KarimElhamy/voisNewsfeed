@@ -1,10 +1,10 @@
-import {Info} from './components/DetailsScreen';
+import {Info} from './screens/details/Details';
 
 declare global {
   namespace ReactNavigation {
     interface RootParamList {
-      ArticleFunc: undefined;
-      DetailsScreen: {
+      Article: undefined;
+      Details: {
         item: Info;
       };
     }

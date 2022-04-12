@@ -11,7 +11,8 @@ import App from './App';
 // import {LanguageProvider} from 'react-native-translation';
 // const locale = Localization.locale;
 import {LogBox} from 'react-native';
-import {DetailsScreen} from './src/components/DetailsScreen';
+import {Details} from './src/screens/details/Details';
+import Navigation from './src/Navigation';
 
 const darkTheme = {
   ...DefaultTheme,
@@ -33,52 +34,12 @@ const lightTheme = {
   },
 };
 
-const Stack = createNativeStackNavigator();
-
-const config = {
-  screens: {
-    App: {path: 'app'},
-    ArticleFun: {path: 'articles'},
-    DetailsScreen: {path: 'details/:id'},
-  },
-};
-
 export default function Main() {
   LogBox.ignoreAllLogs();
   const scheme = useColorScheme();
   return (
     <PaperProvider theme={scheme === 'dark' ? darkTheme : lightTheme}>
-      <NavigationContainer
-        linking={{
-          prefixes: ['newsfeed://'],
-          config,
-        }}>
-        <Stack.Navigator initialRouteName="App">
-          <Stack.Screen
-            options={{
-              title: 'Newsfeed',
-              headerShown: false,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'green',
-              },
-            }}
-            name="App"
-            component={App}
-          />
-          <Stack.Screen
-            options={{
-              headerShown: false,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'green',
-              },
-            }}
-            name="DetailsScreen"
-            component={DetailsScreen}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Navigation />
     </PaperProvider>
   );
 }
