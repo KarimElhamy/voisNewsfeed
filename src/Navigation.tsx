@@ -1,7 +1,4 @@
-import {
-  createNavigationContainerRef,
-  NavigationContainer,
-} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import App from '../App';
 import {Details} from './screens/details/Details';
@@ -17,7 +14,7 @@ const config = {
   },
 };
 
-export default function Navigation() {
+const Navigation = () => {
   return (
     <NavigationContainer
       linking={{
@@ -51,4 +48,6 @@ export default function Navigation() {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+export default Navigation;
