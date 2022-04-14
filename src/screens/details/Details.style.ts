@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: '#202020',
     fontSize: 10,
+    overflow: 'hidden',
   },
   noteStyleRight: {
     margin: 5,
