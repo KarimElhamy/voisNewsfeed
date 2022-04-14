@@ -15,16 +15,21 @@ import {TextInput, Button} from 'react-native-paper';
 import Article from '../../components/article/Article';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import SwitchSelector from 'react-native-switch-selector';
+import i18next from 'i18next';
+import {useTranslation} from 'react-i18next';
+import '../../translations/i18nManager';
 
-const options = [
-  {label: 'English', value: 'en'},
-  {label: 'Arabic', value: 'ar'},
-];
+import {optionsAr, options} from '../../utils';
 
-const optionsAr = [
-  {label: 'إنجليزي', value: 'en'},
-  {label: 'عربي', value: 'ar'},
-];
+// const options = [
+//   {label: 'English', value: 'en'},
+//   {label: 'Arabic', value: 'ar'},
+// ];
+
+// const optionsAr = [
+//   {label: 'إنجليزي', value: 'en'},
+//   {label: 'عربي', value: 'ar'},
+// ];
 
 const darkTheme = {
   ...DefaultTheme,
@@ -57,6 +62,9 @@ const App = () => {
   const scheme = useColorScheme();
 
   global.language = lang;
+
+  const {t} = useTranslation();
+  const direction = i18next.language === 'ar' ? 'rtl' : 'ltr';
 
   useEffect(() => {
     fetchNews();
@@ -102,6 +110,8 @@ const App = () => {
   const langSelector = (value: string) => {
     setLang(value);
     global.language = value;
+    i18next.changeLanguage(value);
+    console.log('the lang', i18next.language);
     handleRefresh();
   };
 
@@ -110,71 +120,35 @@ const App = () => {
       {scheme === 'dark' ? (
         <SafeAreaView style={{backgroundColor: '#202020', flex: 1}}>
           <View style={{backgroundColor: '#202020'}}>
-            {lang === 'en' ? (
-              <SwitchSelector
-                options={options}
-                hasPadding
-                initial={0}
-                onPress={(value: any) => langSelector(value)}
-                buttonColor={'#c62460'}
-                style={{
-                  margin: 5,
-                  borderRadius: 50,
-                  borderTopStartRadius: 50,
-                  borderBottomStartRadius: 50,
-                  borderTopEndRadius: 50,
-                }}
-              />
-            ) : (
-              <SwitchSelector
-                options={optionsAr}
-                hasPadding
-                initial={0}
-                onPress={(value: any) => langSelector(value)}
-                buttonColor={'#c62460'}
-                style={{
-                  margin: 5,
-                  borderRadius: 50,
-                  borderTopStartRadius: 50,
-                  borderBottomStartRadius: 50,
-                  borderTopEndRadius: 50,
-                }}
-              />
-            )}
-            {lang === 'en' ? (
-              <TextInput
-                placeholder="Search..."
-                value={searchValue}
-                onChangeText={text => searchData(text)}
-                style={{
-                  margin: 5,
-                  borderRadius: 50,
-                  borderTopStartRadius: 50,
-                  borderBottomStartRadius: 50,
-                  borderTopEndRadius: 50,
-                  height: 45,
-                  textAlign: 'left',
-                }}
-              />
-            ) : (
-              <TextInput
-                placeholder=" بحث..."
-                textAlign="right"
-                value={searchValue}
-                onChangeText={text => searchData(text)}
-                style={{
-                  margin: 5,
-                  borderRadius: 50,
-                  borderTopStartRadius: 50,
-                  borderBottomStartRadius: 50,
-                  borderTopEndRadius: 50,
-                  height: 45,
-                  textAlign: 'right',
-                }}
-              />
-            )}
+            <SwitchSelector
+              options={direction === 'ltr' ? options : optionsAr}
+              hasPadding
+              initial={0}
+              onPress={(value: any) => langSelector(value)}
+              buttonColor={'#c62460'}
+              style={{
+                margin: 5,
+                borderRadius: 50,
+                borderTopStartRadius: 50,
+                borderBottomStartRadius: 50,
+                borderTopEndRadius: 50,
+              }}
+            />
+            <TextInput
+              placeholder={t('search')}
+              value={searchValue}
+              onChangeText={text => searchData(text)}
+              style={{
+                margin: 5,
+                borderRadius: 50,
+                borderTopStartRadius: 50,
+                borderBottomStartRadius: 50,
+                borderTopEndRadius: 50,
+                height: 45,
+                textAlign: direction === 'ltr' ? 'left' : 'right',
+              }}
+            />
             {/* <ScrollView> */}
-
             <FlatList
               data={articles}
               renderItem={({item}) => <Article article={item} />}
@@ -189,70 +163,34 @@ const App = () => {
       ) : (
         <SafeAreaView style={{backgroundColor: '#FAF9F6', flex: 1}}>
           <View style={{backgroundColor: '#FAF9F6'}}>
-            {lang === 'en' ? (
-              <SwitchSelector
-                options={options}
-                hasPadding
-                initial={0}
-                onPress={(value: any) => langSelector(value)}
-                buttonColor={'#c62460'}
-                style={{
-                  margin: 5,
-                  borderRadius: 50,
-                  borderTopStartRadius: 50,
-                  borderBottomStartRadius: 50,
-                  borderTopEndRadius: 50,
-                }}
-              />
-            ) : (
-              <SwitchSelector
-                options={optionsAr}
-                hasPadding
-                initial={0}
-                onPress={(value: any) => langSelector(value)}
-                buttonColor={'#c62460'}
-                style={{
-                  margin: 5,
-                  borderRadius: 50,
-                  borderTopStartRadius: 50,
-                  borderBottomStartRadius: 50,
-                  borderTopEndRadius: 50,
-                }}
-              />
-            )}
-
-            {lang === 'en' ? (
-              <TextInput
-                placeholder="Search..."
-                value={searchValue}
-                onChangeText={text => searchData(text)}
-                style={{
-                  margin: 5,
-                  borderRadius: 50,
-                  borderTopStartRadius: 50,
-                  borderBottomStartRadius: 50,
-                  borderTopEndRadius: 50,
-                  height: 45,
-                  textAlign: 'left',
-                }}
-              />
-            ) : (
-              <TextInput
-                placeholder=" بحث..."
-                textAlign="right"
-                value={searchValue}
-                onChangeText={text => searchData(text)}
-                style={{
-                  margin: 5,
-                  borderRadius: 50,
-                  borderTopStartRadius: 50,
-                  borderBottomStartRadius: 50,
-                  borderTopEndRadius: 50,
-                  height: 45,
-                  textAlign: 'right',
-                }}
-              />
-            )}
+            <SwitchSelector
+              options={direction === 'ltr' ? options : optionsAr}
+              hasPadding
+              initial={0}
+              onPress={(value: any) => langSelector(value)}
+              buttonColor={'#c62460'}
+              style={{
+                margin: 5,
+                borderRadius: 50,
+                borderTopStartRadius: 50,
+                borderBottomStartRadius: 50,
+                borderTopEndRadius: 50,
+              }}
+            />
+            <TextInput
+              placeholder={t('search')}
+              value={searchValue}
+              onChangeText={text => searchData(text)}
+              style={{
+                margin: 5,
+                borderRadius: 50,
+                borderTopStartRadius: 50,
+                borderBottomStartRadius: 50,
+                borderTopEndRadius: 50,
+                height: 45,
+                textAlign: direction === 'ltr' ? 'left' : 'right',
+              }}
+            />
             {/* <ScrollView> */}
             <FlatList
               data={articles}

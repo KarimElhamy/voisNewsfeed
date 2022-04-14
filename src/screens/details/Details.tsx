@@ -13,6 +13,10 @@ import {useNavigation} from '@react-navigation/native';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import React, {useEffect, useState} from 'react';
 import styles from './Details.style';
+import i18next from 'i18next';
+import {useTranslation} from 'react-i18next';
+
+import '../../translations/i18nManager';
 
 const darkTheme = {
   ...DefaultTheme,
@@ -58,6 +62,9 @@ export const Details: React.FC<ItemProps> = ({route}) => {
     styles;
   const scheme = useColorScheme();
   const navigation = useNavigation();
+
+  const {t} = useTranslation();
+  const direction = i18next.language === 'ar' ? 'rtl' : 'ltr';
 
   return (
     <PaperProvider theme={scheme === 'dark' ? darkTheme : lightTheme}>
@@ -134,57 +141,31 @@ export const Details: React.FC<ItemProps> = ({route}) => {
                         source={{uri: `${itemImage}`}}
                       />
                     )}
-
                     <Text style={{color: 'white'}}>{itemDesc + '\n'}</Text>
-                    {global.language === 'ar' ? (
-                      <Text
-                        style={{
-                          textAlign: 'right',
-                          color: 'white',
-                          fontWeight: 'bold',
-                        }}
-                        onPress={() => Linking.openURL(`${itemUrl}`)}>
-                        {'لقراءة المزيد، انقر هنا...'}
-                      </Text>
-                    ) : (
-                      <Text
-                        style={{color: 'white', fontWeight: 'bold'}}
-                        onPress={() => Linking.openURL(`${itemUrl}`)}>
-                        {'To Read more, click here...'}
-                      </Text>
-                    )}
+                    <Text
+                      style={{
+                        textAlign: direction === 'ltr' ? 'left' : 'right',
+                        color: 'white',
+                        fontWeight: 'bold',
+                      }}
+                      onPress={() => Linking.openURL(`${itemUrl}`)}>
+                      {t('read')}
+                    </Text>
                   </View>
                 </View>
               </Card>
 
               <TouchableOpacity onPress={() => navigation.goBack()}>
-                {global.language === 'en' ? (
-                  <Text
-                    style={{
-                      alignContent: 'flex-start',
-                      color: 'white',
-                      fontWeight: 'bold',
-                      fontSize: 15,
-                      textAlign: 'right',
-                      alignSelf: 'flex-start',
-                      marginTop: 30,
-                    }}>
-                    Return to the Newsfeed
-                  </Text>
-                ) : (
-                  <Text
-                    style={{
-                      alignContent: 'flex-start',
-                      color: 'white',
-                      fontWeight: 'bold',
-                      fontSize: 15,
-                      textAlign: 'right',
-                      alignSelf: 'flex-start',
-                      marginTop: 30,
-                    }}>
-                    العودة إلى الأخبار
-                  </Text>
-                )}
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    fontSize: 15,
+                    marginTop: 30,
+                  }}>
+                  {t('return')}
+                </Text>
               </TouchableOpacity>
             </View>
           </SafeAreaView>
@@ -208,6 +189,8 @@ export const Details: React.FC<ItemProps> = ({route}) => {
                 containerStyle={[
                   card,
                   {
+                    maxHeight: '90%',
+                    maxWidth: '90%',
                     borderWidth: 3,
                     borderColor: '#202020',
                     shadowOffset: {width: 7, height: 7},
@@ -224,8 +207,12 @@ export const Details: React.FC<ItemProps> = ({route}) => {
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                     }}>
-                    <Text style={noteStyle}>{'Author: ' + itemAuthor}</Text>
-                    <Text style={noteStyle}>{'Published: ' + itemDate}</Text>
+                    {!!itemAuthor && (
+                      <Text style={noteStyle}>{'Author: ' + itemAuthor}</Text>
+                    )}
+                    {!!itemDate && (
+                      <Text style={noteStyle}>{'Published: ' + itemDate}</Text>
+                    )}
                   </View>
                   <View style={mediaContainer}>
                     <Card.Image
@@ -233,54 +220,30 @@ export const Details: React.FC<ItemProps> = ({route}) => {
                       source={{uri: `${itemImage}`}}
                     />
                     <Text style={{color: 'black'}}>{itemDesc + '\n'}</Text>
-                    {global.language === 'ar' ? (
-                      <Text
-                        style={{
-                          textAlign: 'right',
-                          color: 'black',
-                          fontWeight: 'bold',
-                        }}
-                        onPress={() => Linking.openURL(`${itemUrl}`)}>
-                        {'لقراءة المزيد، انقر هنا...'}
-                      </Text>
-                    ) : (
-                      <Text
-                        style={{color: 'black', fontWeight: 'bold'}}
-                        onPress={() => Linking.openURL(`${itemUrl}`)}>
-                        {'To Read more, click here...'}
-                      </Text>
-                    )}
+
+                    <Text
+                      style={{
+                        textAlign: direction === 'ltr' ? 'left' : 'right',
+                        color: 'black',
+                        fontWeight: 'bold',
+                      }}
+                      onPress={() => Linking.openURL(`${itemUrl}`)}>
+                      {t('read')}
+                    </Text>
                   </View>
                 </View>
               </Card>
               <TouchableOpacity onPress={() => navigation.goBack()}>
-                {global.language === 'en' ? (
-                  <Text
-                    style={{
-                      alignContent: 'flex-start',
-                      color: 'black',
-                      fontWeight: 'bold',
-                      fontSize: 15,
-                      textAlign: 'right',
-                      alignSelf: 'flex-start',
-                      marginTop: 30,
-                    }}>
-                    Return to the Newsfeed
-                  </Text>
-                ) : (
-                  <Text
-                    style={{
-                      alignContent: 'flex-start',
-                      color: 'black',
-                      fontWeight: 'bold',
-                      fontSize: 15,
-                      textAlign: 'right',
-                      alignSelf: 'flex-start',
-                      marginTop: 30,
-                    }}>
-                    العودة إلى الأخبار
-                  </Text>
-                )}
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: 'black',
+                    fontWeight: 'bold',
+                    fontSize: 15,
+                    marginTop: 30,
+                  }}>
+                  {t('return')}
+                </Text>
               </TouchableOpacity>
             </View>
           </SafeAreaView>
